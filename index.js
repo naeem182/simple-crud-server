@@ -31,12 +31,15 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
+
         //node mongodb crud->usages exp->insert operation
         const database = client.db("usersDB");
         const userCollection = database.collection("users");
+        // const userCollection = client.db('usersDB').collection('users');//1 line
 
 
 
+        //create
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log('new user', user)
@@ -44,6 +47,14 @@ async function run() {
             const result = await userCollection.insertOne(user);
             res.send(result)
 
+        })
+
+
+        //get
+        app.get('/users', async (req, res) => {
+            const cursor = userCollection.find()
+            const result = await cursor.toArray();
+            res.send(result);
         })
 
 
